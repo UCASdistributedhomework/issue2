@@ -9,6 +9,7 @@
 #include <thrift/transport/TTransportUtils.h>
 #include <thrift/TToString.h>
 
+
 #include <iostream>
 #include <stdexcept>
 #include <sstream>
@@ -16,16 +17,18 @@
 #include "gen-cpp/Locker.h"
 #include "ServerSingleton.h"
 #include "Handler.h"
+using namespace std;
 using namespace apache::thrift;
 using namespace apache::thrift::concurrency;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::server;
 
+
 class LockerHandler : virtual public LockerIf  , virtual public IHandler {
     public:
 
-        LockerHandler() {
+        LockerHandler() : prev_index(-1) , the_mark(false) {
             // Your initialization goes here
             std::cerr<<"Create hander "<<this<<" now ..."<<std::endl;
         }
@@ -68,7 +71,7 @@ class LockerHandler : virtual public LockerIf  , virtual public IHandler {
             // Your implementation goes here
             if( index < prev_index ) return false ;
             if( index == prev_index ) return true ;
-            std::cerr<<"client check "<<client_id<<" and result is "<<the_mark<<" now ..."<<std::endl;
+            //std::cerr<<"client check "<<client_id<<" and result is "<<the_mark<<" now ..."<<std::endl;
             prev_index = index;
             return the_mark;
         }
@@ -80,6 +83,7 @@ class LockerHandler : virtual public LockerIf  , virtual public IHandler {
             ServerSingleton::get().RelaseResource(client_id);
             std::cerr<<"client release resource  "<<client_id<<" by "<<this<<" now ..."<<std::endl;
             prev_index = index;
+            the_mark = false ;
             return true ;
         }
         private :
@@ -88,17 +92,29 @@ class LockerHandler : virtual public LockerIf  , virtual public IHandler {
 };
 
 
+class LockerHandlerFactory : virtual public LockerIfFactory {
+ public:
+  ~LockerHandlerFactory() override = default;
+  LockerIf * getHandler(const ::apache::thrift::TConnectionInfo& connInfo) override
+  {
+    std::shared_ptr<TSocket> sock = std::dynamic_pointer_cast<TSocket>(connInfo.transport);
+    return new LockerHandler;
+  }
+
+  void releaseHandler(LockerIf*  handler) override {
+    delete handler;
+  }
+};
 int main() {
 
-    // create a thread for a connecton
-    TThreadedServer server(
-            std::make_shared<LockerProcessor>(std::make_shared<LockerHandler>()),
-            std::make_shared<TServerSocket>(9090), //port
-            std::make_shared<TBufferedTransportFactory>(),
-            std::make_shared<TBinaryProtocolFactory>());
+  TThreadedServer server(
+    std::make_shared<LockerProcessorFactory>(std::make_shared<LockerHandlerFactory>()),
+    std::make_shared<TServerSocket>(9090), //port
+    std::make_shared<TBufferedTransportFactory>(),
+    std::make_shared<TBinaryProtocolFactory>());
 
-    std::cout << "Starting the server..." << std::endl;
     server.serve();
-    std::cout << "Done." << std::endl;
+
+    printf("end/n");
     return 0;
 }

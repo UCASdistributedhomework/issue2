@@ -37,6 +37,7 @@ int main(int argc , char ** argv ) {
         }
         // use the resource now .
         //......
+        sleep(10);
         // release lock
         client.lock_request_release(client_id,index++);
         client.client_exit(client_id,index++);
