@@ -43,9 +43,9 @@ uint32_t Locker_client_register_args::read(::apache::thrift::protocol::TProtocol
         }
         break;
       case 2:
-        if (ftype == ::apache::thrift::protocol::T_BOOL) {
-          xfer += iprot->readBool(this->is_retry);
-          this->__isset.is_retry = true;
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->index);
+          this->__isset.index = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -71,8 +71,8 @@ uint32_t Locker_client_register_args::write(::apache::thrift::protocol::TProtoco
   xfer += oprot->writeI32(this->client_id);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("is_retry", ::apache::thrift::protocol::T_BOOL, 2);
-  xfer += oprot->writeBool(this->is_retry);
+  xfer += oprot->writeFieldBegin("index", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32(this->index);
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -94,8 +94,8 @@ uint32_t Locker_client_register_pargs::write(::apache::thrift::protocol::TProtoc
   xfer += oprot->writeI32((*(this->client_id)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("is_retry", ::apache::thrift::protocol::T_BOOL, 2);
-  xfer += oprot->writeBool((*(this->is_retry)));
+  xfer += oprot->writeFieldBegin("index", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32((*(this->index)));
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -246,9 +246,9 @@ uint32_t Locker_client_exit_args::read(::apache::thrift::protocol::TProtocol* ip
         }
         break;
       case 2:
-        if (ftype == ::apache::thrift::protocol::T_BOOL) {
-          xfer += iprot->readBool(this->is_retry);
-          this->__isset.is_retry = true;
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->index);
+          this->__isset.index = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -274,8 +274,8 @@ uint32_t Locker_client_exit_args::write(::apache::thrift::protocol::TProtocol* o
   xfer += oprot->writeI32(this->client_id);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("is_retry", ::apache::thrift::protocol::T_BOOL, 2);
-  xfer += oprot->writeBool(this->is_retry);
+  xfer += oprot->writeFieldBegin("index", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32(this->index);
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -297,8 +297,8 @@ uint32_t Locker_client_exit_pargs::write(::apache::thrift::protocol::TProtocol* 
   xfer += oprot->writeI32((*(this->client_id)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("is_retry", ::apache::thrift::protocol::T_BOOL, 2);
-  xfer += oprot->writeBool((*(this->is_retry)));
+  xfer += oprot->writeFieldBegin("index", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32((*(this->index)));
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -449,9 +449,9 @@ uint32_t Locker_lock_request_register_args::read(::apache::thrift::protocol::TPr
         }
         break;
       case 2:
-        if (ftype == ::apache::thrift::protocol::T_BOOL) {
-          xfer += iprot->readBool(this->is_retry);
-          this->__isset.is_retry = true;
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->index);
+          this->__isset.index = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -477,8 +477,8 @@ uint32_t Locker_lock_request_register_args::write(::apache::thrift::protocol::TP
   xfer += oprot->writeI32(this->client_id);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("is_retry", ::apache::thrift::protocol::T_BOOL, 2);
-  xfer += oprot->writeBool(this->is_retry);
+  xfer += oprot->writeFieldBegin("index", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32(this->index);
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -500,8 +500,8 @@ uint32_t Locker_lock_request_register_pargs::write(::apache::thrift::protocol::T
   xfer += oprot->writeI32((*(this->client_id)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("is_retry", ::apache::thrift::protocol::T_BOOL, 2);
-  xfer += oprot->writeBool((*(this->is_retry)));
+  xfer += oprot->writeFieldBegin("index", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32((*(this->index)));
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -652,9 +652,9 @@ uint32_t Locker_lock_request_check_args::read(::apache::thrift::protocol::TProto
         }
         break;
       case 2:
-        if (ftype == ::apache::thrift::protocol::T_BOOL) {
-          xfer += iprot->readBool(this->is_retry);
-          this->__isset.is_retry = true;
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->index);
+          this->__isset.index = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -680,8 +680,8 @@ uint32_t Locker_lock_request_check_args::write(::apache::thrift::protocol::TProt
   xfer += oprot->writeI32(this->client_id);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("is_retry", ::apache::thrift::protocol::T_BOOL, 2);
-  xfer += oprot->writeBool(this->is_retry);
+  xfer += oprot->writeFieldBegin("index", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32(this->index);
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -703,8 +703,8 @@ uint32_t Locker_lock_request_check_pargs::write(::apache::thrift::protocol::TPro
   xfer += oprot->writeI32((*(this->client_id)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("is_retry", ::apache::thrift::protocol::T_BOOL, 2);
-  xfer += oprot->writeBool((*(this->is_retry)));
+  xfer += oprot->writeFieldBegin("index", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32((*(this->index)));
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -855,9 +855,9 @@ uint32_t Locker_lock_request_release_args::read(::apache::thrift::protocol::TPro
         }
         break;
       case 2:
-        if (ftype == ::apache::thrift::protocol::T_BOOL) {
-          xfer += iprot->readBool(this->is_retry);
-          this->__isset.is_retry = true;
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->index);
+          this->__isset.index = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -883,8 +883,8 @@ uint32_t Locker_lock_request_release_args::write(::apache::thrift::protocol::TPr
   xfer += oprot->writeI32(this->client_id);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("is_retry", ::apache::thrift::protocol::T_BOOL, 2);
-  xfer += oprot->writeBool(this->is_retry);
+  xfer += oprot->writeFieldBegin("index", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32(this->index);
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -906,8 +906,8 @@ uint32_t Locker_lock_request_release_pargs::write(::apache::thrift::protocol::TP
   xfer += oprot->writeI32((*(this->client_id)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("is_retry", ::apache::thrift::protocol::T_BOOL, 2);
-  xfer += oprot->writeBool((*(this->is_retry)));
+  xfer += oprot->writeFieldBegin("index", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32((*(this->index)));
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -1023,20 +1023,20 @@ uint32_t Locker_lock_request_release_presult::read(::apache::thrift::protocol::T
   return xfer;
 }
 
-bool LockerClient::client_register(const int32_t client_id, const bool is_retry)
+bool LockerClient::client_register(const int32_t client_id, const int32_t index)
 {
-  send_client_register(client_id, is_retry);
+  send_client_register(client_id, index);
   return recv_client_register();
 }
 
-void LockerClient::send_client_register(const int32_t client_id, const bool is_retry)
+void LockerClient::send_client_register(const int32_t client_id, const int32_t index)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("client_register", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Locker_client_register_pargs args;
   args.client_id = &client_id;
-  args.is_retry = &is_retry;
+  args.index = &index;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1082,20 +1082,20 @@ bool LockerClient::recv_client_register()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "client_register failed: unknown result");
 }
 
-bool LockerClient::client_exit(const int32_t client_id, const bool is_retry)
+bool LockerClient::client_exit(const int32_t client_id, const int32_t index)
 {
-  send_client_exit(client_id, is_retry);
+  send_client_exit(client_id, index);
   return recv_client_exit();
 }
 
-void LockerClient::send_client_exit(const int32_t client_id, const bool is_retry)
+void LockerClient::send_client_exit(const int32_t client_id, const int32_t index)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("client_exit", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Locker_client_exit_pargs args;
   args.client_id = &client_id;
-  args.is_retry = &is_retry;
+  args.index = &index;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1141,20 +1141,20 @@ bool LockerClient::recv_client_exit()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "client_exit failed: unknown result");
 }
 
-bool LockerClient::lock_request_register(const int32_t client_id, const bool is_retry)
+bool LockerClient::lock_request_register(const int32_t client_id, const int32_t index)
 {
-  send_lock_request_register(client_id, is_retry);
+  send_lock_request_register(client_id, index);
   return recv_lock_request_register();
 }
 
-void LockerClient::send_lock_request_register(const int32_t client_id, const bool is_retry)
+void LockerClient::send_lock_request_register(const int32_t client_id, const int32_t index)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("lock_request_register", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Locker_lock_request_register_pargs args;
   args.client_id = &client_id;
-  args.is_retry = &is_retry;
+  args.index = &index;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1200,20 +1200,20 @@ bool LockerClient::recv_lock_request_register()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "lock_request_register failed: unknown result");
 }
 
-bool LockerClient::lock_request_check(const int32_t client_id, const bool is_retry)
+bool LockerClient::lock_request_check(const int32_t client_id, const int32_t index)
 {
-  send_lock_request_check(client_id, is_retry);
+  send_lock_request_check(client_id, index);
   return recv_lock_request_check();
 }
 
-void LockerClient::send_lock_request_check(const int32_t client_id, const bool is_retry)
+void LockerClient::send_lock_request_check(const int32_t client_id, const int32_t index)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("lock_request_check", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Locker_lock_request_check_pargs args;
   args.client_id = &client_id;
-  args.is_retry = &is_retry;
+  args.index = &index;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1259,20 +1259,20 @@ bool LockerClient::recv_lock_request_check()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "lock_request_check failed: unknown result");
 }
 
-bool LockerClient::lock_request_release(const int32_t client_id, const bool is_retry)
+bool LockerClient::lock_request_release(const int32_t client_id, const int32_t index)
 {
-  send_lock_request_release(client_id, is_retry);
+  send_lock_request_release(client_id, index);
   return recv_lock_request_release();
 }
 
-void LockerClient::send_lock_request_release(const int32_t client_id, const bool is_retry)
+void LockerClient::send_lock_request_release(const int32_t client_id, const int32_t index)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("lock_request_release", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Locker_lock_request_release_pargs args;
   args.client_id = &client_id;
-  args.is_retry = &is_retry;
+  args.index = &index;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1360,7 +1360,7 @@ void LockerProcessor::process_client_register(int32_t seqid, ::apache::thrift::p
 
   Locker_client_register_result result;
   try {
-    result.success = iface_->client_register(args.client_id, args.is_retry);
+    result.success = iface_->client_register(args.client_id, args.index);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
@@ -1414,7 +1414,7 @@ void LockerProcessor::process_client_exit(int32_t seqid, ::apache::thrift::proto
 
   Locker_client_exit_result result;
   try {
-    result.success = iface_->client_exit(args.client_id, args.is_retry);
+    result.success = iface_->client_exit(args.client_id, args.index);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
@@ -1468,7 +1468,7 @@ void LockerProcessor::process_lock_request_register(int32_t seqid, ::apache::thr
 
   Locker_lock_request_register_result result;
   try {
-    result.success = iface_->lock_request_register(args.client_id, args.is_retry);
+    result.success = iface_->lock_request_register(args.client_id, args.index);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
@@ -1522,7 +1522,7 @@ void LockerProcessor::process_lock_request_check(int32_t seqid, ::apache::thrift
 
   Locker_lock_request_check_result result;
   try {
-    result.success = iface_->lock_request_check(args.client_id, args.is_retry);
+    result.success = iface_->lock_request_check(args.client_id, args.index);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
@@ -1576,7 +1576,7 @@ void LockerProcessor::process_lock_request_release(int32_t seqid, ::apache::thri
 
   Locker_lock_request_release_result result;
   try {
-    result.success = iface_->lock_request_release(args.client_id, args.is_retry);
+    result.success = iface_->lock_request_release(args.client_id, args.index);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
@@ -1614,13 +1614,13 @@ void LockerProcessor::process_lock_request_release(int32_t seqid, ::apache::thri
   return processor;
 }
 
-bool LockerConcurrentClient::client_register(const int32_t client_id, const bool is_retry)
+bool LockerConcurrentClient::client_register(const int32_t client_id, const int32_t index)
 {
-  int32_t seqid = send_client_register(client_id, is_retry);
+  int32_t seqid = send_client_register(client_id, index);
   return recv_client_register(seqid);
 }
 
-int32_t LockerConcurrentClient::send_client_register(const int32_t client_id, const bool is_retry)
+int32_t LockerConcurrentClient::send_client_register(const int32_t client_id, const int32_t index)
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
@@ -1628,7 +1628,7 @@ int32_t LockerConcurrentClient::send_client_register(const int32_t client_id, co
 
   Locker_client_register_pargs args;
   args.client_id = &client_id;
-  args.is_retry = &is_retry;
+  args.index = &index;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1699,13 +1699,13 @@ bool LockerConcurrentClient::recv_client_register(const int32_t seqid)
   } // end while(true)
 }
 
-bool LockerConcurrentClient::client_exit(const int32_t client_id, const bool is_retry)
+bool LockerConcurrentClient::client_exit(const int32_t client_id, const int32_t index)
 {
-  int32_t seqid = send_client_exit(client_id, is_retry);
+  int32_t seqid = send_client_exit(client_id, index);
   return recv_client_exit(seqid);
 }
 
-int32_t LockerConcurrentClient::send_client_exit(const int32_t client_id, const bool is_retry)
+int32_t LockerConcurrentClient::send_client_exit(const int32_t client_id, const int32_t index)
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
@@ -1713,7 +1713,7 @@ int32_t LockerConcurrentClient::send_client_exit(const int32_t client_id, const 
 
   Locker_client_exit_pargs args;
   args.client_id = &client_id;
-  args.is_retry = &is_retry;
+  args.index = &index;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1784,13 +1784,13 @@ bool LockerConcurrentClient::recv_client_exit(const int32_t seqid)
   } // end while(true)
 }
 
-bool LockerConcurrentClient::lock_request_register(const int32_t client_id, const bool is_retry)
+bool LockerConcurrentClient::lock_request_register(const int32_t client_id, const int32_t index)
 {
-  int32_t seqid = send_lock_request_register(client_id, is_retry);
+  int32_t seqid = send_lock_request_register(client_id, index);
   return recv_lock_request_register(seqid);
 }
 
-int32_t LockerConcurrentClient::send_lock_request_register(const int32_t client_id, const bool is_retry)
+int32_t LockerConcurrentClient::send_lock_request_register(const int32_t client_id, const int32_t index)
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
@@ -1798,7 +1798,7 @@ int32_t LockerConcurrentClient::send_lock_request_register(const int32_t client_
 
   Locker_lock_request_register_pargs args;
   args.client_id = &client_id;
-  args.is_retry = &is_retry;
+  args.index = &index;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1869,13 +1869,13 @@ bool LockerConcurrentClient::recv_lock_request_register(const int32_t seqid)
   } // end while(true)
 }
 
-bool LockerConcurrentClient::lock_request_check(const int32_t client_id, const bool is_retry)
+bool LockerConcurrentClient::lock_request_check(const int32_t client_id, const int32_t index)
 {
-  int32_t seqid = send_lock_request_check(client_id, is_retry);
+  int32_t seqid = send_lock_request_check(client_id, index);
   return recv_lock_request_check(seqid);
 }
 
-int32_t LockerConcurrentClient::send_lock_request_check(const int32_t client_id, const bool is_retry)
+int32_t LockerConcurrentClient::send_lock_request_check(const int32_t client_id, const int32_t index)
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
@@ -1883,7 +1883,7 @@ int32_t LockerConcurrentClient::send_lock_request_check(const int32_t client_id,
 
   Locker_lock_request_check_pargs args;
   args.client_id = &client_id;
-  args.is_retry = &is_retry;
+  args.index = &index;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -1954,13 +1954,13 @@ bool LockerConcurrentClient::recv_lock_request_check(const int32_t seqid)
   } // end while(true)
 }
 
-bool LockerConcurrentClient::lock_request_release(const int32_t client_id, const bool is_retry)
+bool LockerConcurrentClient::lock_request_release(const int32_t client_id, const int32_t index)
 {
-  int32_t seqid = send_lock_request_release(client_id, is_retry);
+  int32_t seqid = send_lock_request_release(client_id, index);
   return recv_lock_request_release(seqid);
 }
 
-int32_t LockerConcurrentClient::send_lock_request_release(const int32_t client_id, const bool is_retry)
+int32_t LockerConcurrentClient::send_lock_request_release(const int32_t client_id, const int32_t index)
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
@@ -1968,7 +1968,7 @@ int32_t LockerConcurrentClient::send_lock_request_release(const int32_t client_i
 
   Locker_lock_request_release_pargs args;
   args.client_id = &client_id;
-  args.is_retry = &is_retry;
+  args.index = &index;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();

@@ -23,22 +23,23 @@ int main(int argc , char ** argv ) {
     std::shared_ptr<TProtocol>    protocol(new    TBinaryProtocol(transport));
     LockerClient                  client(protocol);
 
+    int index = 1;
     try {
         transport->open();
 
-        client.client_register(client_id,false);
+        client.client_register(client_id,index++);
         // register requst
-        client.lock_request_register(client_id,false);
+        client.lock_request_register(client_id,index++);
         // wait until get resource
-        while( ! client.lock_request_check(client_id,false) ) 
+        while( ! client.lock_request_check(client_id,index++) ) 
         {
             sleep(1);
         }
         // use the resource now .
         //......
         // release lock
-        client.lock_request_release(client_id,false);
-        client.client_exit(client_id,false);
+        client.lock_request_release(client_id,index++);
+        client.client_exit(client_id,index++);
         transport->close();
     } catch (TException& tx) {
         cout << "ERROR: " << tx.what() << endl;

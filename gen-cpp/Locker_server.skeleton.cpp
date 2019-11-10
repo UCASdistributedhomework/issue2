@@ -18,27 +18,27 @@ class LockerHandler : virtual public LockerIf {
     // Your initialization goes here
   }
 
-  bool client_register(const int32_t client_id, const bool is_retry) {
+  bool client_register(const int32_t client_id, const int32_t index) {
     // Your implementation goes here
     printf("client_register\n");
   }
 
-  bool client_exit(const int32_t client_id, const bool is_retry) {
+  bool client_exit(const int32_t client_id, const int32_t index) {
     // Your implementation goes here
     printf("client_exit\n");
   }
 
-  bool lock_request_register(const int32_t client_id, const bool is_retry) {
+  bool lock_request_register(const int32_t client_id, const int32_t index) {
     // Your implementation goes here
     printf("lock_request_register\n");
   }
 
-  bool lock_request_check(const int32_t client_id, const bool is_retry) {
+  bool lock_request_check(const int32_t client_id, const int32_t index) {
     // Your implementation goes here
     printf("lock_request_check\n");
   }
 
-  bool lock_request_release(const int32_t client_id, const bool is_retry) {
+  bool lock_request_release(const int32_t client_id, const int32_t index) {
     // Your implementation goes here
     printf("lock_request_release\n");
   }

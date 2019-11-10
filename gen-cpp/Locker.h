@@ -22,11 +22,11 @@
 class LockerIf {
  public:
   virtual ~LockerIf() {}
-  virtual bool client_register(const int32_t client_id, const bool is_retry) = 0;
-  virtual bool client_exit(const int32_t client_id, const bool is_retry) = 0;
-  virtual bool lock_request_register(const int32_t client_id, const bool is_retry) = 0;
-  virtual bool lock_request_check(const int32_t client_id, const bool is_retry) = 0;
-  virtual bool lock_request_release(const int32_t client_id, const bool is_retry) = 0;
+  virtual bool client_register(const int32_t client_id, const int32_t index) = 0;
+  virtual bool client_exit(const int32_t client_id, const int32_t index) = 0;
+  virtual bool lock_request_register(const int32_t client_id, const int32_t index) = 0;
+  virtual bool lock_request_check(const int32_t client_id, const int32_t index) = 0;
+  virtual bool lock_request_release(const int32_t client_id, const int32_t index) = 0;
 };
 
 class LockerIfFactory {
@@ -56,32 +56,32 @@ class LockerIfSingletonFactory : virtual public LockerIfFactory {
 class LockerNull : virtual public LockerIf {
  public:
   virtual ~LockerNull() {}
-  bool client_register(const int32_t /* client_id */, const bool /* is_retry */) {
+  bool client_register(const int32_t /* client_id */, const int32_t /* index */) {
     bool _return = false;
     return _return;
   }
-  bool client_exit(const int32_t /* client_id */, const bool /* is_retry */) {
+  bool client_exit(const int32_t /* client_id */, const int32_t /* index */) {
     bool _return = false;
     return _return;
   }
-  bool lock_request_register(const int32_t /* client_id */, const bool /* is_retry */) {
+  bool lock_request_register(const int32_t /* client_id */, const int32_t /* index */) {
     bool _return = false;
     return _return;
   }
-  bool lock_request_check(const int32_t /* client_id */, const bool /* is_retry */) {
+  bool lock_request_check(const int32_t /* client_id */, const int32_t /* index */) {
     bool _return = false;
     return _return;
   }
-  bool lock_request_release(const int32_t /* client_id */, const bool /* is_retry */) {
+  bool lock_request_release(const int32_t /* client_id */, const int32_t /* index */) {
     bool _return = false;
     return _return;
   }
 };
 
 typedef struct _Locker_client_register_args__isset {
-  _Locker_client_register_args__isset() : client_id(false), is_retry(false) {}
+  _Locker_client_register_args__isset() : client_id(false), index(false) {}
   bool client_id :1;
-  bool is_retry :1;
+  bool index :1;
 } _Locker_client_register_args__isset;
 
 class Locker_client_register_args {
@@ -89,24 +89,24 @@ class Locker_client_register_args {
 
   Locker_client_register_args(const Locker_client_register_args&);
   Locker_client_register_args& operator=(const Locker_client_register_args&);
-  Locker_client_register_args() : client_id(0), is_retry(0) {
+  Locker_client_register_args() : client_id(0), index(0) {
   }
 
   virtual ~Locker_client_register_args() noexcept;
   int32_t client_id;
-  bool is_retry;
+  int32_t index;
 
   _Locker_client_register_args__isset __isset;
 
   void __set_client_id(const int32_t val);
 
-  void __set_is_retry(const bool val);
+  void __set_index(const int32_t val);
 
   bool operator == (const Locker_client_register_args & rhs) const
   {
     if (!(client_id == rhs.client_id))
       return false;
-    if (!(is_retry == rhs.is_retry))
+    if (!(index == rhs.index))
       return false;
     return true;
   }
@@ -128,7 +128,7 @@ class Locker_client_register_pargs {
 
   virtual ~Locker_client_register_pargs() noexcept;
   const int32_t* client_id;
-  const bool* is_retry;
+  const int32_t* index;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -190,9 +190,9 @@ class Locker_client_register_presult {
 };
 
 typedef struct _Locker_client_exit_args__isset {
-  _Locker_client_exit_args__isset() : client_id(false), is_retry(false) {}
+  _Locker_client_exit_args__isset() : client_id(false), index(false) {}
   bool client_id :1;
-  bool is_retry :1;
+  bool index :1;
 } _Locker_client_exit_args__isset;
 
 class Locker_client_exit_args {
@@ -200,24 +200,24 @@ class Locker_client_exit_args {
 
   Locker_client_exit_args(const Locker_client_exit_args&);
   Locker_client_exit_args& operator=(const Locker_client_exit_args&);
-  Locker_client_exit_args() : client_id(0), is_retry(0) {
+  Locker_client_exit_args() : client_id(0), index(0) {
   }
 
   virtual ~Locker_client_exit_args() noexcept;
   int32_t client_id;
-  bool is_retry;
+  int32_t index;
 
   _Locker_client_exit_args__isset __isset;
 
   void __set_client_id(const int32_t val);
 
-  void __set_is_retry(const bool val);
+  void __set_index(const int32_t val);
 
   bool operator == (const Locker_client_exit_args & rhs) const
   {
     if (!(client_id == rhs.client_id))
       return false;
-    if (!(is_retry == rhs.is_retry))
+    if (!(index == rhs.index))
       return false;
     return true;
   }
@@ -239,7 +239,7 @@ class Locker_client_exit_pargs {
 
   virtual ~Locker_client_exit_pargs() noexcept;
   const int32_t* client_id;
-  const bool* is_retry;
+  const int32_t* index;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -301,9 +301,9 @@ class Locker_client_exit_presult {
 };
 
 typedef struct _Locker_lock_request_register_args__isset {
-  _Locker_lock_request_register_args__isset() : client_id(false), is_retry(false) {}
+  _Locker_lock_request_register_args__isset() : client_id(false), index(false) {}
   bool client_id :1;
-  bool is_retry :1;
+  bool index :1;
 } _Locker_lock_request_register_args__isset;
 
 class Locker_lock_request_register_args {
@@ -311,24 +311,24 @@ class Locker_lock_request_register_args {
 
   Locker_lock_request_register_args(const Locker_lock_request_register_args&);
   Locker_lock_request_register_args& operator=(const Locker_lock_request_register_args&);
-  Locker_lock_request_register_args() : client_id(0), is_retry(0) {
+  Locker_lock_request_register_args() : client_id(0), index(0) {
   }
 
   virtual ~Locker_lock_request_register_args() noexcept;
   int32_t client_id;
-  bool is_retry;
+  int32_t index;
 
   _Locker_lock_request_register_args__isset __isset;
 
   void __set_client_id(const int32_t val);
 
-  void __set_is_retry(const bool val);
+  void __set_index(const int32_t val);
 
   bool operator == (const Locker_lock_request_register_args & rhs) const
   {
     if (!(client_id == rhs.client_id))
       return false;
-    if (!(is_retry == rhs.is_retry))
+    if (!(index == rhs.index))
       return false;
     return true;
   }
@@ -350,7 +350,7 @@ class Locker_lock_request_register_pargs {
 
   virtual ~Locker_lock_request_register_pargs() noexcept;
   const int32_t* client_id;
-  const bool* is_retry;
+  const int32_t* index;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -412,9 +412,9 @@ class Locker_lock_request_register_presult {
 };
 
 typedef struct _Locker_lock_request_check_args__isset {
-  _Locker_lock_request_check_args__isset() : client_id(false), is_retry(false) {}
+  _Locker_lock_request_check_args__isset() : client_id(false), index(false) {}
   bool client_id :1;
-  bool is_retry :1;
+  bool index :1;
 } _Locker_lock_request_check_args__isset;
 
 class Locker_lock_request_check_args {
@@ -422,24 +422,24 @@ class Locker_lock_request_check_args {
 
   Locker_lock_request_check_args(const Locker_lock_request_check_args&);
   Locker_lock_request_check_args& operator=(const Locker_lock_request_check_args&);
-  Locker_lock_request_check_args() : client_id(0), is_retry(0) {
+  Locker_lock_request_check_args() : client_id(0), index(0) {
   }
 
   virtual ~Locker_lock_request_check_args() noexcept;
   int32_t client_id;
-  bool is_retry;
+  int32_t index;
 
   _Locker_lock_request_check_args__isset __isset;
 
   void __set_client_id(const int32_t val);
 
-  void __set_is_retry(const bool val);
+  void __set_index(const int32_t val);
 
   bool operator == (const Locker_lock_request_check_args & rhs) const
   {
     if (!(client_id == rhs.client_id))
       return false;
-    if (!(is_retry == rhs.is_retry))
+    if (!(index == rhs.index))
       return false;
     return true;
   }
@@ -461,7 +461,7 @@ class Locker_lock_request_check_pargs {
 
   virtual ~Locker_lock_request_check_pargs() noexcept;
   const int32_t* client_id;
-  const bool* is_retry;
+  const int32_t* index;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -523,9 +523,9 @@ class Locker_lock_request_check_presult {
 };
 
 typedef struct _Locker_lock_request_release_args__isset {
-  _Locker_lock_request_release_args__isset() : client_id(false), is_retry(false) {}
+  _Locker_lock_request_release_args__isset() : client_id(false), index(false) {}
   bool client_id :1;
-  bool is_retry :1;
+  bool index :1;
 } _Locker_lock_request_release_args__isset;
 
 class Locker_lock_request_release_args {
@@ -533,24 +533,24 @@ class Locker_lock_request_release_args {
 
   Locker_lock_request_release_args(const Locker_lock_request_release_args&);
   Locker_lock_request_release_args& operator=(const Locker_lock_request_release_args&);
-  Locker_lock_request_release_args() : client_id(0), is_retry(0) {
+  Locker_lock_request_release_args() : client_id(0), index(0) {
   }
 
   virtual ~Locker_lock_request_release_args() noexcept;
   int32_t client_id;
-  bool is_retry;
+  int32_t index;
 
   _Locker_lock_request_release_args__isset __isset;
 
   void __set_client_id(const int32_t val);
 
-  void __set_is_retry(const bool val);
+  void __set_index(const int32_t val);
 
   bool operator == (const Locker_lock_request_release_args & rhs) const
   {
     if (!(client_id == rhs.client_id))
       return false;
-    if (!(is_retry == rhs.is_retry))
+    if (!(index == rhs.index))
       return false;
     return true;
   }
@@ -572,7 +572,7 @@ class Locker_lock_request_release_pargs {
 
   virtual ~Locker_lock_request_release_pargs() noexcept;
   const int32_t* client_id;
-  const bool* is_retry;
+  const int32_t* index;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -658,20 +658,20 @@ class LockerClient : virtual public LockerIf {
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  bool client_register(const int32_t client_id, const bool is_retry);
-  void send_client_register(const int32_t client_id, const bool is_retry);
+  bool client_register(const int32_t client_id, const int32_t index);
+  void send_client_register(const int32_t client_id, const int32_t index);
   bool recv_client_register();
-  bool client_exit(const int32_t client_id, const bool is_retry);
-  void send_client_exit(const int32_t client_id, const bool is_retry);
+  bool client_exit(const int32_t client_id, const int32_t index);
+  void send_client_exit(const int32_t client_id, const int32_t index);
   bool recv_client_exit();
-  bool lock_request_register(const int32_t client_id, const bool is_retry);
-  void send_lock_request_register(const int32_t client_id, const bool is_retry);
+  bool lock_request_register(const int32_t client_id, const int32_t index);
+  void send_lock_request_register(const int32_t client_id, const int32_t index);
   bool recv_lock_request_register();
-  bool lock_request_check(const int32_t client_id, const bool is_retry);
-  void send_lock_request_check(const int32_t client_id, const bool is_retry);
+  bool lock_request_check(const int32_t client_id, const int32_t index);
+  void send_lock_request_check(const int32_t client_id, const int32_t index);
   bool recv_lock_request_check();
-  bool lock_request_release(const int32_t client_id, const bool is_retry);
-  void send_lock_request_release(const int32_t client_id, const bool is_retry);
+  bool lock_request_release(const int32_t client_id, const int32_t index);
+  void send_lock_request_release(const int32_t client_id, const int32_t index);
   bool recv_lock_request_release();
  protected:
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
@@ -729,49 +729,49 @@ class LockerMultiface : virtual public LockerIf {
     ifaces_.push_back(iface);
   }
  public:
-  bool client_register(const int32_t client_id, const bool is_retry) {
+  bool client_register(const int32_t client_id, const int32_t index) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->client_register(client_id, is_retry);
+      ifaces_[i]->client_register(client_id, index);
     }
-    return ifaces_[i]->client_register(client_id, is_retry);
+    return ifaces_[i]->client_register(client_id, index);
   }
 
-  bool client_exit(const int32_t client_id, const bool is_retry) {
+  bool client_exit(const int32_t client_id, const int32_t index) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->client_exit(client_id, is_retry);
+      ifaces_[i]->client_exit(client_id, index);
     }
-    return ifaces_[i]->client_exit(client_id, is_retry);
+    return ifaces_[i]->client_exit(client_id, index);
   }
 
-  bool lock_request_register(const int32_t client_id, const bool is_retry) {
+  bool lock_request_register(const int32_t client_id, const int32_t index) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->lock_request_register(client_id, is_retry);
+      ifaces_[i]->lock_request_register(client_id, index);
     }
-    return ifaces_[i]->lock_request_register(client_id, is_retry);
+    return ifaces_[i]->lock_request_register(client_id, index);
   }
 
-  bool lock_request_check(const int32_t client_id, const bool is_retry) {
+  bool lock_request_check(const int32_t client_id, const int32_t index) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->lock_request_check(client_id, is_retry);
+      ifaces_[i]->lock_request_check(client_id, index);
     }
-    return ifaces_[i]->lock_request_check(client_id, is_retry);
+    return ifaces_[i]->lock_request_check(client_id, index);
   }
 
-  bool lock_request_release(const int32_t client_id, const bool is_retry) {
+  bool lock_request_release(const int32_t client_id, const int32_t index) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->lock_request_release(client_id, is_retry);
+      ifaces_[i]->lock_request_release(client_id, index);
     }
-    return ifaces_[i]->lock_request_release(client_id, is_retry);
+    return ifaces_[i]->lock_request_release(client_id, index);
   }
 
 };
@@ -806,20 +806,20 @@ class LockerConcurrentClient : virtual public LockerIf {
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  bool client_register(const int32_t client_id, const bool is_retry);
-  int32_t send_client_register(const int32_t client_id, const bool is_retry);
+  bool client_register(const int32_t client_id, const int32_t index);
+  int32_t send_client_register(const int32_t client_id, const int32_t index);
   bool recv_client_register(const int32_t seqid);
-  bool client_exit(const int32_t client_id, const bool is_retry);
-  int32_t send_client_exit(const int32_t client_id, const bool is_retry);
+  bool client_exit(const int32_t client_id, const int32_t index);
+  int32_t send_client_exit(const int32_t client_id, const int32_t index);
   bool recv_client_exit(const int32_t seqid);
-  bool lock_request_register(const int32_t client_id, const bool is_retry);
-  int32_t send_lock_request_register(const int32_t client_id, const bool is_retry);
+  bool lock_request_register(const int32_t client_id, const int32_t index);
+  int32_t send_lock_request_register(const int32_t client_id, const int32_t index);
   bool recv_lock_request_register(const int32_t seqid);
-  bool lock_request_check(const int32_t client_id, const bool is_retry);
-  int32_t send_lock_request_check(const int32_t client_id, const bool is_retry);
+  bool lock_request_check(const int32_t client_id, const int32_t index);
+  int32_t send_lock_request_check(const int32_t client_id, const int32_t index);
   bool recv_lock_request_check(const int32_t seqid);
-  bool lock_request_release(const int32_t client_id, const bool is_retry);
-  int32_t send_lock_request_release(const int32_t client_id, const bool is_retry);
+  bool lock_request_release(const int32_t client_id, const int32_t index);
+  int32_t send_lock_request_release(const int32_t client_id, const int32_t index);
   bool recv_lock_request_release(const int32_t seqid);
  protected:
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
