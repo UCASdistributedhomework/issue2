@@ -4,6 +4,7 @@
 #include <deque>
 #include <mutex>
 #include <algorithm>
+#include <iostream>
 #include "Handler.h"
 struct ServerSingleton {
 
@@ -55,6 +56,7 @@ struct ServerSingleton {
         std::lock_guard<std::mutex> lock(the_mutex);
         // filter duplicate requst 
         if( curr_client != client_id ) return ;
+        std::cerr<<"Resurce release by  "<<curr_client<<" now ... "<<std::endl;
         curr_client = -1 ;
         status = RELEASED ;
         check_notify();
@@ -78,12 +80,14 @@ struct ServerSingleton {
         requsts.pop_front() ;
         curr_client = next ; 
         status = LOCKED ;
+        std::cerr<<"Resurce belong to  "<<curr_client<<" now ... "<<std::endl;
     }
     //  clean a client's everything
     void clean_client( int client_id )
     {
         if( curr_client == client_id )
         {
+            std::cerr<<"Resurce release by  "<<curr_client<<" now ... "<<std::endl;
             curr_client = -1 ;
             status = RELEASED ;
         }
