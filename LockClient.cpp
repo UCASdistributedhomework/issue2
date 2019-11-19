@@ -39,7 +39,7 @@ int main(int argc , char ** argv ) {
             sleep(1);
         }
         // use the resource now .
-        //......
+        sleep(10);
         // release lock
         message_index++;
         client.lock_request_release(client_id,message_index,false);

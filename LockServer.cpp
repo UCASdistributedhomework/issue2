@@ -49,13 +49,10 @@ void assignTheKey(){
 class LockerHandler : virtual public LockerIf {
  public:
   LockerHandler() {
-    // Your initialization goes here
-    /*
-    memset(client_request_flag,0,sizeof(client_request_flag));
-    memset(client_alive_flag,0,sizeof(client_alive_flag));
-    request_client_queue.clear();
-    lock_client = -1;
-    */
+      printf("LockerHandler allocate now ...\n");
+  }
+  ~LockerHandler() {
+      printf("LockerHandler release now ...\n");
   }
 
   bool client_register(const int32_t client_id, const int32_t message_index, const bool is_retry) {
@@ -83,7 +80,7 @@ class LockerHandler : virtual public LockerIf {
       lock_client = -1;
       assignTheKey();
     }
-    printf("client_exit\n");
+    printf("client_exit %d .\n",client_id);
     return true;
   }
 
@@ -91,7 +88,7 @@ class LockerHandler : virtual public LockerIf {
     // Your implementation goes here
     if(client_alive_flag[client_id]){
       if(message_index<client_message_index[client_id]){
-        printf("warning : timeout request\n");
+        printf("warning : timeout request %d .\n",client_id );
         return false;
       }
       client_message_index[client_id] = message_index;
@@ -104,31 +101,34 @@ class LockerHandler : virtual public LockerIf {
           client_request_flag[client_id] = true;
           client_request_queue.push(client_id);
         }
-        printf("lock_request_register\n");
+        printf("lock_request_register %d .\n",client_id);
         return true;
       }
     }
-    printf("warning : bad request\n");
+    printf("warning : bad request %d .\n",client_id);
     return false;
   }
 
   bool lock_request_check(const int32_t client_id, const int32_t message_index, const bool is_retry) {
     // Your implementation goes here
-    return lock_client == client_id;
-    printf("lock_request_check\n");
+      if( lock_client == client_id ) {
+          printf("lock_request_check  succ %d .\n",client_id);
+          return true ;
+      } 
+      return false ;
   }
 
   bool lock_request_release(const int32_t client_id, const int32_t message_index, const bool is_retry) {
     // Your implementation goes here
     if(message_index<client_message_index[client_id]){
-      printf("warning : timeout release\n");
+      printf("warning : timeout release %d .\n",client_id);
       return false;
     }
     client_message_index[client_id] = message_index;
     if(lock_client==client_id){
       lock_client = -1;
       assignTheKey();
-      printf("lock_request_release\n");
+      printf("lock_request_release %d .\n",client_id);
       return true;
     }
     printf("warning : invalid release\n");
