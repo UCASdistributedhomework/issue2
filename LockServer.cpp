@@ -65,7 +65,7 @@ class LockerHandler : virtual public LockerIf {
     client_alive_flag[client_id] = true;
     client_request_flag[client_id] = false;
     client_message_index[client_id] = 0;
-    printf("client_register\n");
+    printf("client_register %d .\n",client_id);
     return true;
   }
 
