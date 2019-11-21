@@ -30,7 +30,7 @@ class LockerHandler : virtual public LockerIf  , virtual public IHandler {
 
         LockerHandler() : prev_index(-1) , the_mark(false) {
             // Your initialization goes here
-            std::cerr<<"Create hander "<<this<<" now ..."<<std::endl;
+            std::cerr<<"[S] Create handler "<<this<<" now ..."<<std::endl;
         }
 
         void Mark() override {
@@ -42,7 +42,7 @@ class LockerHandler : virtual public LockerIf  , virtual public IHandler {
             if( index < prev_index ) return false ;
             if( index == prev_index ) return true ;
             ServerSingleton::get().RegisterClient(client_id,this);
-            std::cerr<<"client register "<<client_id<<" by "<<this<<" now ..."<<std::endl;
+            std::cerr<<"[S] Client register "<<client_id<<" by "<<this<<" now ..."<<std::endl;
             prev_index = index;
             return true ;
         }
@@ -52,7 +52,7 @@ class LockerHandler : virtual public LockerIf  , virtual public IHandler {
             if( index == prev_index ) return true ;
             // Your implementation goes here
             ServerSingleton::get().RegisterClient(client_id,this);
-            std::cerr<<"client exit "<<client_id<<" by "<<this<<" now ..."<<std::endl;
+            std::cerr<<"[S] Client exit "<<client_id<<" by "<<this<<" now ..."<<std::endl;
             prev_index = index;
             return true ;
         }
@@ -61,8 +61,8 @@ class LockerHandler : virtual public LockerIf  , virtual public IHandler {
             if( index < prev_index ) return false ;
             if( index == prev_index ) return true ;
             // Your implementation goes here
+            std::cerr<<"[S] Client requst resource "<<client_id<<" by "<<this<<" now ..."<<std::endl;
             ServerSingleton::get().RequestResource(client_id);
-            std::cerr<<"client requst resource "<<client_id<<" by "<<this<<" now ..."<<std::endl;
             prev_index = index;
             return true ;
         }
@@ -80,8 +80,8 @@ class LockerHandler : virtual public LockerIf  , virtual public IHandler {
             // Your implementation goes here
             if( index < prev_index ) return false ;
             if( index == prev_index ) return true ;
+            std::cerr<<"[S] Client release resource  "<<client_id<<" by "<<this<<" now ..."<<std::endl;
             ServerSingleton::get().RelaseResource(client_id);
-            std::cerr<<"client release resource  "<<client_id<<" by "<<this<<" now ..."<<std::endl;
             prev_index = index;
             the_mark = false ;
             return true ;
@@ -113,8 +113,8 @@ int main() {
     std::make_shared<TBufferedTransportFactory>(),
     std::make_shared<TBinaryProtocolFactory>());
 
+    std::cerr<<"[S] Server starts now ...\n";
     server.serve();
-
-    printf("end/n");
+    std::cerr<<"[S] Server quit now .n";
     return 0;
 }
