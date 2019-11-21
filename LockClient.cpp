@@ -11,9 +11,12 @@ int main(int argc , char ** argv ) {
     std::cout<<"client start , current client_id is "<<client_id<<"\n";
 
     ClientSwap client(client_id);
-    client.Lock();
-    // use resource to do something ...
-    sleep(10);
-    client.Unlock();
+    for( int i = 0 ; i < 20 ; i ++ )
+    {
+        client.Lock();
+        // use resource to do something ...
+        sleep(5);
+        client.Unlock();
+    }
     std::cout<<"client end, current client_id is "<<client_id<<"\n";
 }

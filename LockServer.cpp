@@ -64,6 +64,11 @@ class LockerHandler : virtual public LockerIf  , virtual public IHandler {
             std::cerr<<"[S] Client requst resource "<<client_id<<" by "<<this<<" now ..."<<std::endl;
             ServerSingleton::get().RequestResource(client_id);
             prev_index = index;
+            //test code :
+            if( std::rand() % 10 ==1 ) {
+                std::cerr<<"[S] Client requst resource "<<client_id<<" fake lost requst package by sleep "<<" now ..."<<std::endl;
+                sleep(1); // long enough to trigger client timeout
+            }
             return true ;
         }
 
@@ -84,6 +89,12 @@ class LockerHandler : virtual public LockerIf  , virtual public IHandler {
             ServerSingleton::get().RelaseResource(client_id);
             prev_index = index;
             the_mark = false ;
+            //test code :
+            if( std::rand() % 10 ==1 )
+            {
+                std::cerr<<"[S] Client release resource "<<client_id<<" fake lost requst package by sleep "<<" now ..."<<std::endl;
+                sleep(1); // long enough to trigger client timeout
+            }
             return true ;
         }
         private :

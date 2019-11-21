@@ -16,7 +16,9 @@ class ClientSwap {
     public :
         ClientSwap(int id) : client_id(id) , index(1) {
             // create connection and client
-            std::shared_ptr<TTransport>   socket(new      TSocket("localhost", 9090));
+            TSocket * sockptr  = new      TSocket("localhost", 9090);
+            sockptr->setRecvTimeout(999) ; // time out <1 second !!!!
+            std::shared_ptr<TTransport>   socket(sockptr);
             transport = std::shared_ptr<TTransport>(new   TBufferedTransport(socket));
             std::shared_ptr<TProtocol>    protocol(new    TBinaryProtocol(transport));
             client = new LockerClient(protocol);
@@ -37,7 +39,27 @@ class ClientSwap {
             bool ret = false;
             try {
                 // register requst
-                ret = client->lock_request_register(client_id,index++);
+                bool retry = false ;
+                do {
+                    retry = false ;
+                    try { 
+                        ret = client->lock_request_register(client_id,index++);
+                        // test code :
+                        if( std::rand() % 10 == 1 ) {
+                            retry  = true ;
+                            std::cout<<" lock_request_register fake lost response package now , re-try ...\n";
+                            index -- ;
+                        }
+                    } catch  ( TTransportException& tx ) {
+                        if( tx.getType() == TTransportException::TIMED_OUT ){
+                            retry  = true ;
+                            std::cout<<" lock_request_register timeout now , re-try ...\n";
+                            index -- ;
+                        } 
+                        else
+                            throw tx ;
+                    }
+                } while( retry ) ;
                 // wait until get resource
                 while( ! client->lock_request_check(client_id,index++) ) 
                 {
@@ -52,7 +74,27 @@ class ClientSwap {
         bool Unlock() {
             bool ret = false;
             try {
-                ret = client->lock_request_release(client_id,index++);
+                bool retry = false ;
+                do {
+                    retry = false ;
+                    try { 
+                        ret = client->lock_request_release(client_id,index++);
+                        // test code :
+                        if( std::rand() % 10 == 1 ) {
+                            retry  = true ;
+                            std::cout<<" lock_request_release fake lost response package now , re-try ...\n";
+                            index -- ;
+                        }
+                    } catch  ( TTransportException& tx ) {
+                        if( tx.getType() == TTransportException::TIMED_OUT ){
+                            retry  = true ;
+                            std::cout<<" lock_request_release timeout now , re-try ...\n";
+                            index -- ;
+                        } 
+                        else
+                            throw tx ;
+                    }
+                } while( retry ) ;
             } catch (TException& tx) {
                 std::cout << "ERROR: " << tx.what() << std::endl;
                 return false ;
