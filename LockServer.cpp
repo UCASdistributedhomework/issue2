@@ -9,14 +9,15 @@
 #include <thrift/transport/TTransportUtils.h>
 #include <thrift/TToString.h>
 
+
 #include <iostream>
+#include <time.h>
 #include <stdexcept>
 #include <sstream>
-#include <string.h>
-#include <queue>
 
 #include "gen-cpp/Locker.h"
-
+#include "ServerSingleton.h"
+#include "Handler.h"
 using namespace std;
 using namespace apache::thrift;
 using namespace apache::thrift::concurrency;
@@ -24,138 +25,110 @@ using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::server;
 
-const int  MAXNCLIENT = 100000;
-queue<int> client_request_queue;
-bool client_request_flag[MAXNCLIENT];
-bool client_alive_flag[MAXNCLIENT];
-int client_message_index[MAXNCLIENT];
-int lock_client;//-1 is free
 
-void assignTheKey(){
-  if(lock_client!=-1){
-    return;
-  }
-  while(!client_request_queue.empty()){
-    int client = client_request_queue.front();
-    client_request_queue.pop();
-    if(client_request_flag[client]){
-      lock_client = client;
-      client_request_flag[lock_client] = false;
-      break;
-    }
-  }
-}
+class LockerHandler : virtual public LockerIf  , virtual public IHandler {
+    public:
 
-class LockerHandler : virtual public LockerIf {
- public:
-  LockerHandler() {
-      printf("LockerHandler allocate now ...\n");
-  }
-  ~LockerHandler() {
-      printf("LockerHandler release now ...\n");
-  }
-
-  bool client_register(const int32_t client_id, const int32_t message_index, const bool is_retry) {
-    // Your implementation goes here
-    //assume only exisit one client_id for one client
-    if(client_id>=MAXNCLIENT){
-      printf("warning : client_id is outrange!\n");
-      return false;
-    }
-    client_alive_flag[client_id] = true;
-    client_request_flag[client_id] = false;
-    client_message_index[client_id] = 0;
-    printf("client_register %d .\n",client_id);
-    return true;
-  }
-
-  bool client_exit(const int32_t client_id, const int32_t message_index, const bool is_retry) {
-    // Your implementation goes here
-    if(message_index<client_message_index[client_id]){
-      return false;
-    }
-    client_request_flag[client_id] = false;
-    client_alive_flag[client_id] = false;
-    if(lock_client==client_id){
-      lock_client = -1;
-      assignTheKey();
-    }
-    printf("client_exit %d .\n",client_id);
-    return true;
-  }
-
-  bool lock_request_register(const int32_t client_id, const int32_t message_index, const bool is_retry) {
-    // Your implementation goes here
-    if(client_alive_flag[client_id]){
-      if(message_index<client_message_index[client_id]){
-        printf("warning : timeout request %d .\n",client_id );
-        return false;
-      }
-      client_message_index[client_id] = message_index;
-      if(!client_request_flag[client_id]){
-        if(lock_client == -1){
-          // no client before ,get the key
-          lock_client = client_id;
-        }else{
-          // wait the key
-          client_request_flag[client_id] = true;
-          client_request_queue.push(client_id);
+        LockerHandler() : prev_index(-1) , the_mark(false) {
+            // Your initialization goes here
+            std::cerr<<"[S] Create handler "<<this<<" now ..."<<std::endl;
         }
-        printf("lock_request_register %d .\n",client_id);
-        return true;
-      }
-    }
-    printf("warning : bad request %d .\n",client_id);
-    return false;
-  }
 
-  bool lock_request_check(const int32_t client_id, const int32_t message_index, const bool is_retry) {
-    // Your implementation goes here
-      if( lock_client == client_id ) {
-          printf("lock_request_check  succ %d .\n",client_id);
-          return true ;
-      } 
-      return false ;
-  }
+        void Mark() override {
+            the_mark = true ;
+        }
 
-  bool lock_request_release(const int32_t client_id, const int32_t message_index, const bool is_retry) {
-    // Your implementation goes here
-    if(message_index<client_message_index[client_id]){
-      printf("warning : timeout release %d .\n",client_id);
-      return false;
-    }
-    client_message_index[client_id] = message_index;
-    if(lock_client==client_id){
-      lock_client = -1;
-      assignTheKey();
-      printf("lock_request_release %d .\n",client_id);
-      return true;
-    }
-    printf("warning : invalid release\n");
-    return false;
-  }
+        bool client_register(const int32_t client_id, const int32_t index ) {
+            // Your implementation goes here
+            if( index < prev_index ) return false ;
+            if( index == prev_index ) return true ;
+            prev_index = index;
+            ServerSingleton::get().RegisterClient(client_id,this);
+            std::cerr<<"[S] Client register "<<client_id<<" by "<<this<<" now ..."<<std::endl; 
+            return true ;
+        }
 
+        bool client_exit(const int32_t client_id, const int32_t index) {
+            if( index < prev_index ) return false ;
+            if( index == prev_index ) return true ;
+            prev_index = index;
+            // Your implementation goes here
+            ServerSingleton::get().RegisterClient(client_id,this);
+            std::cerr<<"[S] Client exit "<<client_id<<" by "<<this<<" now ..."<<std::endl;
+            return true ;
+        }
+
+        bool lock_request_register(const int32_t client_id, const int32_t index) {
+            if( index < prev_index ) return false ;
+            if( index == prev_index ) return true ;
+            prev_index = index;
+            // Your implementation goes here
+            std::cerr<<"[S] Client requst resource "<<client_id<<" by "<<this<<" now ..."<<std::endl;
+            ServerSingleton::get().RequestResource(client_id);
+            //test code :
+            if( std::rand() % 10 ==1 ) {
+                std::cerr<<"[S] Client requst resource "<<client_id<<" fake lost requst package by sleep "<<" now ..."<<std::endl;
+                sleep(1); // long enough to trigger client timeout
+            }
+            return true ;
+        }
+
+        bool lock_request_check(const int32_t client_id, const int32_t index) {
+            // Your implementation goes here
+            if( index < prev_index ) return false ;
+            if( index == prev_index ) return true ;
+            prev_index = index;
+            //std::cerr<<"client check "<<client_id<<" and result is "<<the_mark<<" now ..."<<std::endl;
+            return the_mark;
+        }
+
+        bool lock_request_release(const int32_t client_id,const int32_t index) {
+            // Your implementation goes here
+            if( index < prev_index ) return false ;
+            if( index == prev_index ) return true ;
+            prev_index = index;
+            std::cerr<<"[S] Client release resource  "<<client_id<<" by "<<this<<" now ..."<<std::endl;
+            ServerSingleton::get().RelaseResource(client_id);
+            the_mark = false ;
+            //test code :
+            if( std::rand() % 10 ==1 )
+            {
+                std::cerr<<"[S] Client release resource "<<client_id<<" fake lost requst package by sleep "<<" now ..."<<std::endl;
+                sleep(1); // long enough to trigger client timeout
+            }
+            return true ;
+        }
+        private :
+        bool the_mark ; // whether resource is avaliable or not 
+        int prev_index ; // prev client requst id , ignore all prer but delayed requst .
 };
 
-void initServer(){
-    memset(client_request_flag,0,sizeof(client_request_flag));
-    memset(client_alive_flag,0,sizeof(client_alive_flag));
-    lock_client = -1;
-}
 
+class LockerHandlerFactory : virtual public LockerIfFactory {
+ public:
+  ~LockerHandlerFactory() override = default;
+  LockerIf * getHandler(const ::apache::thrift::TConnectionInfo& connInfo) override
+  {
+    std::shared_ptr<TSocket> sock = std::dynamic_pointer_cast<TSocket>(connInfo.transport);
+    return new LockerHandler;
+  }
+
+  void releaseHandler(LockerIf*  handler) override {
+    delete handler;
+  }
+};
 int main() {
 
-    // create a thread for a connecton
-    TThreadedServer server(
-            std::make_shared<LockerProcessor>(std::make_shared<LockerHandler>()),
-            std::make_shared<TServerSocket>(9090), //port
-            std::make_shared<TBufferedTransportFactory>(),
-            std::make_shared<TBinaryProtocolFactory>());
-    cout << "Initing the server..." << endl;
-    initServer();
-    cout << "Starting the server..." << endl;
-    
+  TThreadedServer server(
+    std::make_shared<LockerProcessorFactory>(std::make_shared<LockerHandlerFactory>()),
+    std::make_shared<TServerSocket>(9090), //port
+    std::make_shared<TBufferedTransportFactory>(),
+    std::make_shared<TBinaryProtocolFactory>());
+
+    srand((unsigned)time(NULL));
+
+    std::cerr<<"[S] Server starts now ...\n";
     server.serve();
-    cout << "Done." << endl;
+    std::cerr<<"[S] Server quit now .n";
     return 0;
 }
